@@ -1,7 +1,4 @@
-import {
-  deleteRoom,
-  updateRoomDetail,
-} from '../../../../../backend/controller/roomController'
+import { deleteRoom, updateRoomDetail } from '@/backend/controller/roomController'
 import dbConnect from '@/backend/config/dbConnect'
 import { createEdgeRouter } from 'next-connect'
 import { NextRequest } from 'next/server'
