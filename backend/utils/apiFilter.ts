@@ -24,6 +24,7 @@ class APIFilter {
 
   filter(): APIFilter {
     const queryStrCopy = { ...this.queryStr }
+    // Delete Location field for filtering since it's Search condition
     const removeFields = ['location']
     removeFields.forEach(el => delete queryStrCopy[el])
     // exec MongoDB find()
