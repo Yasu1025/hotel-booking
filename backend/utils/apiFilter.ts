@@ -16,7 +16,19 @@ class APIFilter {
           },
         }
       : {}
+
+    // exec MongoDB find()
     this.query = this.query.find({ ...location })
+    return this
+  }
+
+  filter(): APIFilter {
+    const queryStrCopy = { ...this.queryStr }
+    const removeFields = ['location']
+    removeFields.forEach(el => delete queryStrCopy[el])
+    // exec MongoDB find()
+    this.query = this.query.find(queryStrCopy)
+
     return this
   }
 }

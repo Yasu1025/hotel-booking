@@ -16,7 +16,7 @@ export const getAllRooms = catchAsyncErrors(async (req: NextRequest) => {
   searchParams.forEach((val, key) => {
     queryStr[key] = val
   })
-  const apiFilter = new APIFilter(Room, queryStr).search()
+  const apiFilter = new APIFilter(Room, queryStr).search().filter()
 
   const rooms: IRoom = await apiFilter.query
 
