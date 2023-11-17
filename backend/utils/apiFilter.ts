@@ -24,11 +24,20 @@ class APIFilter {
 
   filter(): APIFilter {
     const queryStrCopy = { ...this.queryStr }
-    // Delete Location field for filtering since it's Search condition
-    const removeFields = ['location']
+    // Delete 'Location', 'page' field for filtering since it's Search condition
+    const removeFields = ['location', 'page']
     removeFields.forEach(el => delete queryStrCopy[el])
     // exec MongoDB find()
     this.query = this.query.find(queryStrCopy)
+
+    return this
+  }
+
+  pagination(resPerPage: number): APIFilter {
+    const currentPage = Number(this.queryStr?.page) || 1
+    const skip = resPerPage * (currentPage - 1)
+
+    this.query = this.query.clone().limit(resPerPage).skip(skip)
 
     return this
   }

@@ -8,7 +8,6 @@ import APIFilter from '../utils/APIFilter'
 // GET /api/rooms
 export const getAllRooms = catchAsyncErrors(async (req: NextRequest) => {
   const resPerPage = 8
-  // const rooms = await Room.find()
 
   // For filtering with URL params
   const { searchParams } = new URL(req.url)
@@ -18,10 +17,19 @@ export const getAllRooms = catchAsyncErrors(async (req: NextRequest) => {
   })
   const apiFilter = new APIFilter(Room, queryStr).search().filter()
 
-  const rooms: IRoom = await apiFilter.query
+  let rooms: IRoom[] = await apiFilter.query
+  // room Total
+  const roomsTotal: number = await Room.countDocuments()
+  const filteredRoomsTotal: number = rooms.length
+
+  // For Pagination. Get rooms per resPerPage
+  apiFilter.pagination(resPerPage)
+  rooms = await apiFilter.query
 
   return NextResponse.json({
     success: true,
+    roomsTotal,
+    filteredRoomsTotal,
     resPerPage,
     rooms,
   })
