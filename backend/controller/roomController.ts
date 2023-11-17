@@ -1,13 +1,24 @@
+import { IRoom } from './../models/room'
 import { catchAsyncErrors } from './../middlewares/catchAsyncError'
 import { NextRequest, NextResponse } from 'next/server'
 import Room from '../models/room'
 import ErrorHandler from '../utils/errorHandler'
+import APIFilter from '../utils/APIFilter'
 
 // GET /api/rooms
-export const getAllRooms = catchAsyncErrors(async () => {
+export const getAllRooms = catchAsyncErrors(async (req: NextRequest) => {
   const resPerPage = 8
+  // const rooms = await Room.find()
 
-  const rooms = await Room.find()
+  // For filtering with URL params
+  const { searchParams } = new URL(req.url)
+  const queryStr: any = {}
+  searchParams.forEach((val, key) => {
+    queryStr[key] = val
+  })
+  const apiFilter = new APIFilter(Room, queryStr).search()
+
+  const rooms: IRoom = await apiFilter.query
 
   return NextResponse.json({
     success: true,
