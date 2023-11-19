@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import RoomItem from './room/RoomItem'
 
@@ -13,7 +15,6 @@ const Home = () => {
           {/*  Your room items here  */}
           <RoomItem />
           <RoomItem />
-
           <RoomItem />
           <RoomItem />
           <RoomItem />
