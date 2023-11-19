@@ -2,19 +2,20 @@
 
 import { IRoom } from '@/backend/models/room'
 import React from 'react'
+import CustomPagination from './layout/CustomPagination'
 import RoomItem from './room/RoomItem'
 
 interface IProps {
   data: {
     success: boolean
     resPerPage: number
-    filteredRoomsCount: number
+    filteredRoomsTotal: number
     rooms: IRoom[]
   }
 }
 
 const Home = ({ data }: IProps) => {
-  const { rooms } = data
+  const { resPerPage, filteredRoomsTotal, rooms } = data
   return (
     <div>
       <section id='rooms' className='container mt-5'>
@@ -32,6 +33,8 @@ const Home = ({ data }: IProps) => {
           )}
         </div>
       </section>
+
+      <CustomPagination resPerPage={resPerPage} filteredRoomsTotal={filteredRoomsTotal} />
     </div>
   )
 }

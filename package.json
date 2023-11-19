@@ -28,6 +28,7 @@
     "react-bootstrap": "^2.9.1",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
+    "react-js-pagination": "^3.0.3",
     "react-star-ratings": "^2.3.0",
     "typescript": "5.2.2"
   },
@@ -35,6 +36,7 @@
     "node": "18.17.0"
   },
   "devDependencies": {
+    "@types/react-js-pagination": "^3.0.7",
     "@types/react-star-ratings": "^2.3.3"
   }
 }
