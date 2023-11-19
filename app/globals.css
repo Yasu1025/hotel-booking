@@ -313,10 +313,16 @@ nav {
   color: #e61e4d;
 }
 
+.ratings-wrap {
+  display: flex;
+  align-items: center;
+}
+
 .no-of-reviews {
   font-size: 0.85rem;
   color: grey;
   margin-left: 0.5rem;
+  padding-top: 0.3rem;
 }
 
 /* Room Details Page */
