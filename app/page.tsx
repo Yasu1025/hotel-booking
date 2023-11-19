@@ -1,10 +1,21 @@
 import Home from '@/components/Home'
-import styles from './page.module.css'
+import Error from './error'
 
-export default function HomePage() {
-  return (
-    <div className='container'>
-      <Home />
-    </div>
-  )
+export const metadata = {
+  title: 'Home - Hotel Booking',
+}
+
+const getRooms = async () => {
+  const res = await fetch(`${process.env.API_BASE}/api/rooms`)
+  return res.json()
+}
+
+export default async function HomePage() {
+  const data = await getRooms()
+  if (data?.massage) {
+    // Handle error
+    return <Error error={data} />
+  }
+
+  return <Home data={data} />
 }

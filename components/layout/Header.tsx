@@ -8,9 +8,11 @@ const Header = () => {
         <div className='col-6 col-lg-3 p-0'>
           <div className='navbar-brand'>
             <a href='/'>
-              <img
+              <Image
                 style={{ cursor: 'pointer' }}
-                src='images/hotel-booking_logo.png'
+                src='/images/hotel-booking_logo.png'
+                width={120}
+                height={40}
                 alt='HotelBooking'
               />
             </a>
@@ -27,7 +29,7 @@ const Header = () => {
               aria-expanded='false'
             >
               <figure className='avatar avatar-nav'>
-                <img
+                <Image
                   src='/images/default_avatar.jpg'
                   alt='John Doe'
                   className='rounded-circle placeholder-glow'
