@@ -30,8 +30,7 @@ const SearchForm = () => {
           <h2 className='mb-3'>Search Rooms</h2>
           <div className='form-group mt-3'>
             <label htmlFor='location_field' className='mb-1'>
-              {' '}
-              Location{' '}
+              Location
             </label>
             <input
               type='text'
@@ -45,8 +44,7 @@ const SearchForm = () => {
 
           <div className='form-group mt-3'>
             <label htmlFor='guest_field' className='mb-1'>
-              {' '}
-              No. of Guests{' '}
+              No. of Guests
             </label>
             <select
               className='form-select'
@@ -65,8 +63,7 @@ const SearchForm = () => {
 
           <div className='form-group mt-3'>
             <label htmlFor='room_type_field' className='mb-1'>
-              {' '}
-              Room Type{' '}
+              Room Type
             </label>
             <select
               className='form-select'
