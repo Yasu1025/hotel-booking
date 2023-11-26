@@ -1,12 +1,24 @@
 'use client'
 
+import { setIsAuthenticated, setUser } from '@/store/feature/userSlice'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const Header = () => {
+  const dispatch = useAppDispatch()
+  const { user } = useAppSelector(state => state.auth)
+
   const { data } = useSession()
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setUser(data?.user))
+      dispatch(setIsAuthenticated(true))
+    }
+  }, [data])
 
   const logoutHandler = () => {
     signOut()
@@ -20,9 +32,8 @@ const Header = () => {
             <a href='/'>
               <Image
                 style={{ cursor: 'pointer' }}
-                src={
-                  data?.user.avatar ? data?.user.avatar : '/images/hotel-booking_logo.png'
-                }
+                // src={user.avatar ? user.avatar : '/images/hotel-booking_logo.png'}
+                src={'/images/hotel-booking_logo.png'}
                 width={120}
                 height={40}
                 alt='HotelBooking'
@@ -50,7 +61,7 @@ const Header = () => {
                     width='50'
                   />
                 </figure>
-                <span className='placeholder-glow ps-1'>{data?.user?.name}</span>
+                <span className='placeholder-glow ps-1'>{user ? user.name : ''}</span>
               </button>
 
               <div className='dropdown-menu w-100' aria-labelledby='dropdownMenuButton1'>
