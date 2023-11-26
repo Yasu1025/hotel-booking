@@ -1,4 +1,4 @@
-import { bcrypt } from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import dbConnect from '@/backend/config/dbConnect'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import NextAuth from 'next-auth/next'

@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 const Header = () => {
@@ -55,6 +56,9 @@ const Header = () => {
               </a>
             </div>
           </div>
+          <Link href='/login' className='btn btn-danger px-4 text-white'>
+            LOGIN
+          </Link>
         </div>
       </div>
     </nav>
