@@ -53,7 +53,8 @@ async function auth(req: NextRequest, res: any) {
       session: async ({ session, token }) => {
         session.user = token.user as IUser
 
-        console.log('Session -> ', session)
+        //@ts-ignore
+        delete session?.user?.password
         return session
       },
     },
