@@ -1,20 +1,23 @@
 'use client'
 
-import { useUpdateProfileMutation } from '@/store/api/userApi'
-import { useAppSelector } from '@/store/hooks'
+import { useUpdateProfileMutation, useLazyUpdateSessionQuery } from '@/store/api/userApi'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { setUser } from '@/store/feature/userSlice'
+import ButtonLoader from '../layout/ButtonLoader'
 
 const UpdateProfile = () => {
+  const dispatch = useAppDispatch()
+  const router = useRouter()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const router = useRouter()
 
   const { user: currentUser } = useAppSelector(state => state.auth)
   const [updateProfile, { isLoading, isSuccess, error }] = useUpdateProfileMutation()
-  // if (data) dispatch(setUser(data?.user))
+  const [updateSession, { data }] = useLazyUpdateSessionQuery()
+  if (data) dispatch(setUser(data?.user))
 
   useEffect(() => {
     if (currentUser) {
@@ -27,9 +30,11 @@ const UpdateProfile = () => {
     }
 
     if (isSuccess) {
+      // @ts-ignore
+      updateSession()
       router.refresh()
     }
-  }, [currentUser, error, isSuccess])
+  }, [currentUser, error, isSuccess, router, updateSession])
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -74,7 +79,7 @@ const UpdateProfile = () => {
           </div>
 
           <button type='submit' className='btn form-btn w-100 py-2'>
-            UPDATE
+            {isLoading ? <ButtonLoader /> : 'UPDATE'}
           </button>
         </form>
       </div>
