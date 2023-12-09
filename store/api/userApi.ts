@@ -13,7 +13,14 @@ export const userAPI = createApi({
         }
       },
     }),
+    updateSession: builder.query({
+      query(body) {
+        return {
+          url: '/auth/session?update',
+        }
+      },
+    }),
   }),
 })
 
-export const { useUpdateProfileMutation } = userAPI
+export const { useUpdateProfileMutation, useLazyUpdateSessionQuery } = userAPI

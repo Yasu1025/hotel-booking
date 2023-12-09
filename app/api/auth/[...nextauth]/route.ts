@@ -42,11 +42,16 @@ async function auth(req: NextRequest, res: any) {
     ],
     callbacks: {
       jwt: async ({ token, user }) => {
-        console.log(token, user)
+        const jwtToken = token as Token
 
         user && (token.user = user)
 
-        // TODO: update session when user is updated
+        // update session when user is updated
+        if (req.url?.includes('/api/auth/session?update')) {
+          // hit the database and return the updated user
+          const updatedUser = await User.findById(jwtToken?.user?._id)
+          token.user = updatedUser
+        }
 
         return token
       },
