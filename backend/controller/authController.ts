@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { catchAsyncErrors } from '../middlewares/catchAsyncError'
 import User from '../models/user'
+import ErrorHandler from '../utils/errorHandler'
 
 // Register User /api/auth/register
 export const registerUser = catchAsyncErrors(async (req: NextRequest) => {
@@ -30,5 +31,24 @@ export const updateUser = catchAsyncErrors(async (req: NextRequest) => {
   return NextResponse.json({
     success: true,
     user,
+  })
+})
+
+// Update User profile /api/me/update_password
+export const updatePassword = catchAsyncErrors(async (req: NextRequest) => {
+  const body = await req.json()
+  const user = await User.findById(req.user._id.select('+password'))
+
+  const isMatched = await user.comparePassword(body.oldPassword)
+
+  if (!isMatched) {
+    throw new ErrorHandler('Old password is incorrect...', 400)
+  }
+
+  user.password = body.password
+  await user.save()
+
+  return NextResponse.json({
+    success: true,
   })
 })

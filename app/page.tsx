@@ -15,7 +15,7 @@ const getRooms = async (searchParams: string) => {
 
 export default async function HomePage({ searchParams }: { searchParams: string }) {
   const data = await getRooms(searchParams)
-  if (data?.massage) {
+  if (data?.errMessage) {
     // Handle error
     return <Error error={data} />
   }

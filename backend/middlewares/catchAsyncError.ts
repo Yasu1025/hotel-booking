@@ -22,9 +22,14 @@ export const catchAsyncErrors =
         error.statusCode = 400
       }
 
+      // handle MongoDB duplicate key error
+      if (error.code === 11000) {
+        error.message = `Duplicate ${Object.keys(error.keyValue)}`
+      }
+
       return NextResponse.json(
         {
-          message: error.message,
+          errMessage: error.message,
         },
         { status: error.statusCode || 500 }
       )

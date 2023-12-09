@@ -13,7 +13,7 @@ const getRoom = async (id: string) => {
 export default async function RoomDetailPage({ params }: IProos) {
   const { id } = params
   const data = await getRoom(id)
-  if (data?.massage) {
+  if (data?.errMessage) {
     // Handle error
     return <Error error={data} />
   }
