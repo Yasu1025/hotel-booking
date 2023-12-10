@@ -32,7 +32,6 @@ const Header = () => {
             <a href='/'>
               <Image
                 style={{ cursor: 'pointer' }}
-                // src={user.avatar ? user.avatar : '/images/hotel-booking_logo.png'}
                 src={'/images/hotel-booking_logo.png'}
                 width={120}
                 height={40}
@@ -54,7 +53,9 @@ const Header = () => {
               >
                 <figure className='avatar avatar-nav'>
                   <Image
-                    src='/images/default_avatar.jpg'
+                    src={
+                      user?.avatar ? user.avatar.url : '/images/hotel-booking_logo.png'
+                    }
                     alt='John Doe'
                     className='rounded-circle placeholder-glow'
                     height='50'
