@@ -1,6 +1,10 @@
 import UpdateProfile from '@/components/user/UpdateProfile'
 import React from 'react'
 
+export const metadata = {
+  title: 'Update profile - Hotel Booking',
+}
+
 const UpdateProfilePage = () => {
   return <UpdateProfile />
 }

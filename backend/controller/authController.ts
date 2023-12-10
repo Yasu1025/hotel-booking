@@ -37,7 +37,7 @@ export const updateUser = catchAsyncErrors(async (req: NextRequest) => {
 // Update User profile /api/me/update_password
 export const updatePassword = catchAsyncErrors(async (req: NextRequest) => {
   const body = await req.json()
-  const user = await User.findById(req.user._id.select('+password'))
+  const user = await User.findById(req.user._id).select('+password')
 
   const isMatched = await user.comparePassword(body.oldPassword)
 

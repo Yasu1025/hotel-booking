@@ -20,7 +20,20 @@ export const userAPI = createApi({
         }
       },
     }),
+    updatePassword: builder.mutation({
+      query(body) {
+        return {
+          url: '/me/update_password',
+          method: 'PUT',
+          body,
+        }
+      },
+    }),
   }),
 })
 
-export const { useUpdateProfileMutation, useLazyUpdateSessionQuery } = userAPI
+export const {
+  useUpdateProfileMutation,
+  useLazyUpdateSessionQuery,
+  useUpdatePasswordMutation,
+} = userAPI
