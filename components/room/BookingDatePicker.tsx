@@ -3,6 +3,7 @@
 import { IRoom } from '@/backend/models/room'
 import { calculateDaysOfStay } from '@/helpers/helpers'
 import {
+  useGetBookedDatesQuery,
   useLazyCheckAvailabilityQuery,
   useNewBookingMutation,
 } from '@/store/api/bookingApi'
@@ -19,11 +20,13 @@ const BookingDatePicker = ({ room }: Props) => {
   const [checkOutDate, setCheckOutDate] = useState(new Date())
   const [daysOfStay, setDaysOfStay] = useState(0)
 
+  // Redux ----
   const [newBooking] = useNewBookingMutation()
   // data => {isAvailable: boolean}
   const [checkAvailability, { data }] = useLazyCheckAvailabilityQuery()
   const isAvailable = data?.isAvailable
-  console.log('isAvalilable: ', data)
+  const { data: { bookedDates: dates } = {} } = useGetBookedDatesQuery(room._id)
+  const excludeDates = dates?.map((date: string) => new Date(date)) || []
 
   const onChangeDate = (dates: any) => {
     const [newCheckIn, newCheckOut] = dates
@@ -75,6 +78,7 @@ const BookingDatePicker = ({ room }: Props) => {
         startDate={checkInDate}
         endDate={checkOutDate}
         minDate={new Date()}
+        excludeDates={excludeDates}
         selectsRange
         inline
       />

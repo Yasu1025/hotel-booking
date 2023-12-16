@@ -1,8 +1,12 @@
+import Moment from 'moment'
+import { extendMoment } from 'moment-range'
 import { NextRequest, NextResponse } from 'next/server'
 import Booking, { IBooking } from '../models/booking'
 import { catchAsyncErrors } from './../middlewares/catchAsyncError'
 
-// Create new Booking   =>  /api/bookings
+const moment = extendMoment(Moment)
+
+// Create new Booking   =>  /api/booking
 export const newBooking = catchAsyncErrors(async (req: NextRequest) => {
   const body = await req.json()
 
@@ -24,7 +28,7 @@ export const newBooking = catchAsyncErrors(async (req: NextRequest) => {
   })
 })
 
-// check room Booking availability   =>  /api/bookings/check
+// check room Booking availability   =>  /api/booking/check
 export const checkRoomBookingAvailability = catchAsyncErrors(async (req: NextRequest) => {
   const { searchParams } = new URL(req.url)
   const roomId = searchParams.get('roomId')
@@ -44,5 +48,23 @@ export const checkRoomBookingAvailability = catchAsyncErrors(async (req: NextReq
 
   return NextResponse.json({
     isAvailable,
+  })
+})
+
+// check room Booked Date   =>  /api/booking/get_booked_dates
+export const getBookedDates = catchAsyncErrors(async (req: NextRequest) => {
+  const { searchParams } = new URL(req.url)
+  const roomId = searchParams.get('roomId')
+
+  const bookings = await Booking.find({ room: roomId })
+
+  const bookedDates = bookings.flatMap(booking =>
+    Array.from(
+      moment.range(moment(booking.checkInDate), moment(booking.checkOutDate)).by('day')
+    )
+  )
+
+  return NextResponse.json({
+    bookedDates,
   })
 })
