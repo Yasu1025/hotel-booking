@@ -13,7 +13,14 @@ export const bookingAPI = createApi({
         }
       },
     }),
+    checkAvailability: builder.query({
+      query({ id, checkInDate, checkOutDate }) {
+        return {
+          url: `/booking/check_availability?roomId=${id}&checkInDate=${checkInDate}&checkOutDate=${checkOutDate}`,
+        }
+      },
+    }),
   }),
 })
 
-export const { useNewBookingMutation } = bookingAPI
+export const { useNewBookingMutation, useLazyCheckAvailabilityQuery } = bookingAPI

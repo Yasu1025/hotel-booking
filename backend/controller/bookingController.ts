@@ -26,9 +26,9 @@ export const newBooking = catchAsyncErrors(async (req: NextRequest) => {
 
 // check room Booking availability   =>  /api/bookings/check
 export const checkRoomBookingAvailability = catchAsyncErrors(async (req: NextRequest) => {
-  const body = await req.json()
   const { searchParams } = new URL(req.url)
   const roomId = searchParams.get('roomId')
+
   const checkInDate: Date = new Date(searchParams.get('checkInDate') as string)
   const checkOutDate: Date = new Date(searchParams.get('checkOutDate') as string)
 
@@ -36,7 +36,7 @@ export const checkRoomBookingAvailability = catchAsyncErrors(async (req: NextReq
     room: roomId,
     $and: [
       { checkInDate: { $lte: checkOutDate } },
-      { checkOutDate: { $lte: checkInDate } },
+      { checkOutDate: { $gte: checkInDate } },
     ],
   })
 
