@@ -2,6 +2,7 @@ import Moment from 'moment'
 import { extendMoment } from 'moment-range'
 import { NextRequest, NextResponse } from 'next/server'
 import Booking, { IBooking } from '../models/booking'
+import ErrorHandler from '../utils/errorHandler'
 import { catchAsyncErrors } from './../middlewares/catchAsyncError'
 
 const moment = extendMoment(Moment)
@@ -68,3 +69,27 @@ export const getBookedDates = catchAsyncErrors(async (req: NextRequest) => {
     bookedDates,
   })
 })
+
+// get my booking   =>  /api/booking/me
+export const getMyBooking = catchAsyncErrors(async (req: NextRequest) => {
+  const bookings = await Booking.find({ user: req.user._id })
+
+  return NextResponse.json({
+    bookings,
+  })
+})
+
+// get Booking details   =>  /api/booking/:id
+export const getBookingDetails = catchAsyncErrors(
+  async (req: NextRequest, { params }: { params: { id: string } }) => {
+    const bookings = await Booking.findById(params.id)
+
+    if (bookings.user !== req.user._id) {
+      throw new ErrorHandler('You can not view this booking', 403)
+    }
+
+    return NextResponse.json({
+      bookings,
+    })
+  }
+)
