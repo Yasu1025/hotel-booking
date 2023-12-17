@@ -73,7 +73,6 @@ export const getBookedDates = catchAsyncErrors(async (req: NextRequest) => {
 // get my booking   =>  /api/booking/me
 export const getMyBooking = catchAsyncErrors(async (req: NextRequest) => {
   const bookings = await Booking.find({ user: req.user._id })
-
   return NextResponse.json({
     bookings,
   })
@@ -83,7 +82,6 @@ export const getMyBooking = catchAsyncErrors(async (req: NextRequest) => {
 export const getBookingDetails = catchAsyncErrors(
   async (req: NextRequest, { params }: { params: { id: string } }) => {
     const bookings = await Booking.findById(params.id)
-
     if (bookings.user !== req.user._id) {
       throw new ErrorHandler('You can not view this booking', 403)
     }
