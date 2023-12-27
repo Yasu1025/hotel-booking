@@ -1,4 +1,4 @@
-import { IRoom } from './../models/room'
+import { IReview, IRoom } from './../models/room'
 import { catchAsyncErrors } from './../middlewares/catchAsyncError'
 import { NextRequest, NextResponse } from 'next/server'
 import Room from '../models/room'
@@ -50,7 +50,7 @@ export const createNewRoom = catchAsyncErrors(async (req: NextRequest) => {
 export const getRoomDetail = catchAsyncErrors(
   async (req: NextRequest, { params }: { params: { id: string } }) => {
     const { id } = params
-    const room = await Room.findById(id)
+    const room = await Room.findById(id).populate('reviews.user')
 
     if (!room) {
       throw new ErrorHandler('Room not found', 404)
@@ -103,3 +103,47 @@ export const deleteRoom = catchAsyncErrors(
     })
   }
 )
+
+// CREATE/UPDATE /api/reviews
+export const createRoomReview = catchAsyncErrors(async (req: NextRequest) => {
+  const body = await req.json()
+  const { rating, comment, roomId } = body
+
+  const review = {
+    user: req.user._id,
+    rating: Number(rating),
+    comment,
+  } as IReview
+
+  const room = (await Room.findById(roomId)) as IRoom
+
+  const isReviewed = room.reviews.find(
+    (r: IReview) => r.user.toString() === req.user._id.toString()
+  )
+
+  if (isReviewed) {
+    // UPDATE
+    room.reviews.forEach((review: IReview) => {
+      if (review.user.toString() === req.user._id.toString()) {
+        review.rating = rating
+        review.comment = comment
+      }
+    })
+  } else {
+    // CREATE
+    room.reviews.push(review)
+    room.numOfReviews = room.reviews.length
+  }
+
+  // GET AVARAGE of REVIEWS
+  room.ratings =
+    room.reviews.reduce((acc: number, item: { rating: number }) => item.rating + acc, 0) /
+    room.reviews.length
+
+  await room.save()
+
+  return NextResponse.json({
+    success: true,
+    room,
+  })
+})

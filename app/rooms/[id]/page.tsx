@@ -6,7 +6,9 @@ interface IProos {
 }
 
 const getRoom = async (id: string) => {
-  const res = await fetch(`${process.env.API_BASE}/api/rooms/${id}`)
+  const res = await fetch(`${process.env.API_BASE}/api/rooms/${id}`, {
+    cache: 'no-cache',
+  })
   return res.json()
 }
 

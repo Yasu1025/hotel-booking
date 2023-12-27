@@ -49,9 +49,9 @@ const RoomDetails = ({ room }: IProps) => {
         </div>
       </div>
 
-      <NewReview />
+      <NewReview roomId={room._id} />
 
-      <ListReviews />
+      <ListReviews reviews={room.reviews} />
     </div>
   )
 }

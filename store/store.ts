@@ -3,6 +3,7 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
 import userSlice from './feature/userSlice'
 import { userAPI } from './api/userApi'
 import { bookingAPI } from './api/bookingApi'
+import { roomAPI } from './api/roomApi'
 
 export const store = configureStore({
   reducer: {
@@ -10,12 +11,14 @@ export const store = configureStore({
     [authAPI.reducerPath]: authAPI.reducer,
     [userAPI.reducerPath]: userAPI.reducer,
     [bookingAPI.reducerPath]: bookingAPI.reducer,
+    [roomAPI.reducerPath]: roomAPI.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat([
       authAPI.middleware,
       userAPI.middleware,
       bookingAPI.middleware,
+      roomAPI.middleware,
     ]),
 })
 
