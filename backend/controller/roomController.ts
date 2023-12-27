@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import Room from '../models/room'
 import ErrorHandler from '../utils/errorHandler'
 import APIFilter from '../utils/APIFilter'
+import Booking from '../models/booking'
 
 // GET /api/rooms
 export const getAllRooms = catchAsyncErrors(async (req: NextRequest) => {
@@ -145,5 +146,17 @@ export const createRoomReview = catchAsyncErrors(async (req: NextRequest) => {
   return NextResponse.json({
     success: true,
     room,
+  })
+})
+
+// Can user review room /api/reviews/can_review
+export const canReview = catchAsyncErrors(async (req: NextRequest) => {
+  const { searchParams } = new URL(req.url)
+  const roomId = searchParams.get('roomId')
+  const bookings = await Booking.find({ user: req.user._id, room: roomId })
+  const canReview = bookings.length > 0 ? true : false
+
+  return NextResponse.json({
+    canReview,
   })
 })

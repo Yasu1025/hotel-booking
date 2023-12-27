@@ -1,4 +1,4 @@
-import { usePostReviewMutation } from '@/store/api/roomApi'
+import { useCanUserReviewQuery, usePostReviewMutation } from '@/store/api/roomApi'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
@@ -13,6 +13,7 @@ const NewReview = ({ roomId }: Props) => {
   const [yourRating, setYourRating] = useState(0)
   const [yourComment, setYourComment] = useState('')
 
+  const { data: { canReview } = {} } = useCanUserReviewQuery(roomId)
   const [postReview, { error, isSuccess }] = usePostReviewMutation()
 
   useEffect(() => {
@@ -37,14 +38,17 @@ const NewReview = ({ roomId }: Props) => {
   }
   return (
     <>
-      <button
-        type='button'
-        className='btn form-btn mt-4 mb-5'
-        data-bs-toggle='modal'
-        data-bs-target='#ratingModal'
-      >
-        Submit Your Review
-      </button>
+      {canReview && (
+        <button
+          type='button'
+          className='btn form-btn mt-4 mb-5'
+          data-bs-toggle='modal'
+          data-bs-target='#ratingModal'
+        >
+          Submit Your Review
+        </button>
+      )}
+
       <div
         className='modal fade'
         id='ratingModal'
