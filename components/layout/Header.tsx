@@ -66,7 +66,7 @@ const Header = () => {
               </button>
 
               <div className='dropdown-menu w-100' aria-labelledby='dropdownMenuButton1'>
-                {user.role === 'admin' && (
+                {user?.role === 'admin' && (
                   <Link href='/admin/dashboard' className='dropdown-item'>
                     Dashboard
                   </Link>

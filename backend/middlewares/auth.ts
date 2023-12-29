@@ -23,7 +23,7 @@ export const isAuthenticatedRoute = async (req: NextRequest, event: any, next: a
 
 export const authorizeRoles = (...roles: string[]) => {
   return (req: NextRequest, event: any, next: any) => {
-    if (roles.includes(req.user.role)) {
+    if (!roles.includes(req.user.role)) {
       return NextResponse.json(
         {
           errMessage: `Role (${req.user.role}) is not allowed to access this resource`,
