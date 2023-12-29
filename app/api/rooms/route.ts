@@ -2,6 +2,7 @@ import { getAllRooms, createNewRoom } from '@/backend/controller/roomController'
 import dbConnect from '@/backend/config/dbConnect'
 import { createEdgeRouter } from 'next-connect'
 import { NextRequest } from 'next/server'
+import { authorizeRoles, isAuthenticatedRoute } from '@/backend/middlewares/auth'
 
 interface RequestContext {}
 
